@@ -1,12 +1,6 @@
 # Hotels data merge
 
-## Introduction
-
-To write the application you can use any language. It should work as a web server. You can post it as a gist, upload to github or send us via email, anything works as long as the code is correct and you send us instructions how to use it.
-
-## Background
-
-In any hotels site like Kaligo.com operated by Ascenda, there's a lot of effort being made to present content in a clean & organised manner. Underneath the hood however, the data procurement process is complex and data is often mismatched & dirty.
+In any hotels site, there's a lot of effort being made to present content in a clean & organised manner. Underneath the hood however, the data procurement process is complex and data is often mismatched & dirty.
 
 This exercise gives you a sneak peak in some of the actions we take to clean up data before it makes it to the site
 
@@ -35,7 +29,7 @@ I build this app using Ruby on Rails framework as a web server.
 - Crawl hotel data (get and merge data by some simple rules) from provided suppliers
 - Crawling data react dynamically over time when adding/ removing a hotel from 1 of the supplier datasets
 - Schedule updating data every 10 minutes
-- Build admin site to view and control data
+- Build admin site to view and manage data
 - Build API endpoint to query hotels data
 - Check code with rubocop and rails_best_practices
 - Write spec tests
@@ -47,10 +41,10 @@ I build this app using Ruby on Rails framework as a web server.
 2. Install Ruby and Rails as detail in Gemfile
 3. Run `bundle install` to install missing gems
 4. Setup the local environment
-  1. Run `rake db:create`
-  2. Run `rake db:migrate`
+    - Run `rake db:create`
+    - Run `rake db:migrate`
 5. Get and merge hotels data from suppliers to your local database
-  Run `rake hotel_data:crawl`
+    - Run `rake hotel_data:crawl`
 6. Start your web server `rails s`
 7. Open `localhost:3000` to check list APIs doc
 8. Open `localhost:3000/admin` to go to admin site
@@ -69,8 +63,8 @@ Deploy code to heroku
 - Api detail of a hotel: https://ascenda-hotels.herokuapp.com/v1/hotels/iJhz.json
 
 ## Test cases
-Write some spec code in spec/
-Run command to verify test cases `rspec spec/`
+- Write some spec code in spec/
+- Run command to verify test cases `rspec spec/`
 
 ## Code quality
 Verified code with:
