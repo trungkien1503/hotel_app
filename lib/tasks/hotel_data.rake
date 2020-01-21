@@ -8,14 +8,7 @@ namespace :hotel_data do
 
   task crawl: :environment do
     puts 'Start getting and merging hotel data'
-    Hotel.destroy_all
-    Hotel::SUPPLIERS.each do |supplier_url|
-      supplier_data = open(supplier_url).read
-      hotels = JSON.parse(supplier_data)
-      hotels.each do |hotel_data|
-        hotel_service = HotelService.new(hotel_data).save
-      end
-    end
+    Hotel.crawling_data
     puts 'Finish!'
   end
 end
