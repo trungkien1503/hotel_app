@@ -36,11 +36,11 @@ class HotelService
 
   def location
     {
-      "lat" => lat,
-      "lng" => lng,
-      "address" => address,
-      "city" => city,
-      "country" => country
+      'lat' => lat,
+      'lng' => lng,
+      'address' => address,
+      'city' => city,
+      'country' => country
     }
   end
 
