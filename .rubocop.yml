@@ -1,1 +1,20 @@
 require: rubocop-rails
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*.rb
+    - config/**/*.rb
+    - bin/*
+    - test/test_helper.rb
+Metrics/ModuleLength:
+  Exclude:
+    - app/docs/hotels/index_doc.rb
+Metrics/AbcSize:
+  Exclude:
+    - app/services/hotel_service.rb
+Layout/LineLength:
+  Max: 100
+Style/Documentation:
+  Enabled: False
+Naming/HeredocDelimiterNaming:
+  Enabled: False

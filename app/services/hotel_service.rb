@@ -9,18 +9,25 @@ class HotelService
 
   def save
     hotel = Hotel.find_or_create_by(hotel_id: hotel_id, destination_id: destination_id)
-    hotel_attrs = {
-      name: name || hotel.name,
-      location: (hotel.location || {}).merge(location) { |_key, oldval, newval| newval || oldval },
-      description: description || hotel.description,
-      amenities: (hotel.amenities || {}).merge(amenities) { |_key, oldval, newval| newval || oldval },
-      images: (hotel.images || {}).merge(images) { |_key, oldval, newval| newval || oldval },
-      booking_conditions: booking_conditions || hotel.booking_conditions
-    }
-    hotel.update(hotel_attrs)
+    hotel.update hotel_attrs(hotel)
   end
 
   private
+
+  def hotel_attrs(hotel)
+    {
+      name: name || hotel.name,
+      location: merge_hash_data(hotel.location, location),
+      description: description || hotel.description,
+      amenities: merge_hash_data(hotel.amenities, amenities),
+      images: merge_hash_data(hotel.images, images),
+      booking_conditions: booking_conditions || hotel.booking_conditions
+    }
+  end
+
+  def merge_hash_data(source, dest)
+    (source || {}).merge(dest) { |_k, oldval, newval| newval || oldval }
+  end
 
   def hotel_id
     hotel_data['Id'] || hotel_data['id'] || hotel_data['hotel_id']
@@ -77,14 +84,26 @@ class HotelService
   end
 
   def images
+    room_images = organize_image_info hotel_data.dig('images', 'rooms')
+    site_images = organize_image_info hotel_data.dig('images', 'site')
+    amenities_images = organize_image_info hotel_data.dig('images', 'amenities')
     {
-      'rooms' => hotel_data.dig('images', 'rooms'),
-      'site' => hotel_data.dig('images', 'site'),
-      'amenities' => hotel_data.dig('images', 'amenities')
+      'rooms' => room_images,
+      'site' => site_images,
+      'amenities' => amenities_images
     }
   end
 
   def booking_conditions
     hotel_data['booking_conditions']
+  end
+
+  def organize_image_info(images)
+    return if images.blank?
+
+    images.each do |image|
+      image['link'] = image.delete 'url' if image['url'].present?
+      image['description'] = image.delete 'caption' if image['caption'].present?
+    end
   end
 end

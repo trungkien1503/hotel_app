@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # Handle Hotel table
-require 'open-uri'
 
 class Hotel < ApplicationRecord
   serialize :booking_conditions, Array
@@ -17,10 +16,10 @@ class Hotel < ApplicationRecord
   def self.crawling_data
     Hotel.destroy_all
     SUPPLIERS.each do |supplier_url|
-      supplier_data = open(supplier_url).read
+      supplier_data = URI.parse(supplier_url).read
       hotels = JSON.parse(supplier_data)
       hotels.each do |hotel_data|
-        hotel_service = HotelService.new(hotel_data).save
+        HotelService.new(hotel_data).save
       end
     end
   end
