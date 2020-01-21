@@ -77,14 +77,25 @@ class HotelService
   end
 
   def images
+    room_images = organize_image_info hotel_data.dig('images', 'rooms')
+    site_images = organize_image_info hotel_data.dig('images', 'site')
+    amenities_images = organize_image_info hotel_data.dig('images', 'amenities')
     {
-      'rooms' => hotel_data.dig('images', 'rooms'),
-      'site' => hotel_data.dig('images', 'site'),
-      'amenities' => hotel_data.dig('images', 'amenities')
+      'rooms' => room_images,
+      'site' => site_images,
+      'amenities' => amenities_images
     }
   end
 
   def booking_conditions
     hotel_data['booking_conditions']
+  end
+
+  def organize_image_info(images)
+    return if images.blank?
+    images.each do |image|
+      image['link'] = image.delete 'url' if image['url'].present?
+      image['description'] = image.delete 'caption' if image['caption'].present?
+    end
   end
 end
