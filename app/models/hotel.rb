@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handle Hotel table
 
 class Hotel < ApplicationRecord
@@ -8,7 +10,6 @@ class Hotel < ApplicationRecord
     https://api.myjson.com/bins/1fva3m
     https://api.myjson.com/bins/j6kzm
   ].freeze
-
 
   validates :supplier_id, :destination_id, presence: true
 
