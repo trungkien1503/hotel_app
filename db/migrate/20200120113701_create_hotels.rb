@@ -3,7 +3,7 @@
 class CreateHotels < ActiveRecord::Migration[5.2]
   def change
     create_table :hotels do |t|
-      t.string :supplier_id, null: false
+      t.string :hotel_id, null: false
       t.integer :destination_id, null: false
       t.string :name
       t.json :location
