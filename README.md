@@ -37,7 +37,7 @@ I build this app using Ruby on Rails framework as a web server.
 
 ## How to use
 
-1. Clone this app to the local environment
+1. Clone this app branch `master` to the local environment
 2. Install Ruby and Rails as detail in Gemfile
 3. Run `bundle install` to install missing gems
 4. Setup the local environment
@@ -49,6 +49,17 @@ I build this app using Ruby on Rails framework as a web server.
 7. Open `localhost:3000` to check list APIs doc
 8. Open `localhost:3000/admin` to go to admin site
 9. Open `localhost:3000/v1/hotels.json?destination_id=5432&hotels=iJhz,SjyX` to check api list of hotels
+10. Open `localhost:3000/v1/hotels/iJhz.json` to check api detail of a hotel
+
+## Structure
+- `api/v1/hotels_controller.rb` to build controller handling requests (thin controller, not put logic in controllers)
+- `config/routes.rb` define routing
+- `app/models/hotel.rb` write some logic
+- `app/services/hotel_service.rb` the large logic should be put in services not in model
+- `lib/tasks/hotel_data.rake` rake task to crawl hotel data
+- `app/views/api/v1` views file (ex: build json view for list of hotels)
+- `app/docs/hotels` build api doc here, not put in controller
+- `spec/controller`, `spec/requests/api/v1/`, `spec/routing` test cases here
 
 ## Deploy
 
