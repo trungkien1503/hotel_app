@@ -19,7 +19,7 @@ class HotelService
       name: name || hotel.name,
       location: merge_hash_data(hotel.location, location),
       description: description || hotel.description,
-      amenities: merge_hash_data(hotel.amenities, amenities),
+      amenities: merge_amenities(hotel.amenities, amenities),
       images: merge_hash_data(hotel.images, images),
       booking_conditions: booking_conditions || hotel.booking_conditions
     }
@@ -27,6 +27,13 @@ class HotelService
 
   def merge_hash_data(source, dest)
     (source || {}).merge(dest) { |_k, oldval, newval| newval || oldval }
+  end
+
+  def merge_amenities(source, dest)
+    return source unless dest
+    return dest unless source
+
+    dest.length > source.length ? dest : source
   end
 
   def hotel_id
