@@ -10,12 +10,12 @@ class HotelService
   def save
     hotel = Hotel.find_or_create_by(supplier_id: supplier_id, destination_id: destination_id)
     hotel_attrs = {
-      name: name.to_s.strip,
+      name: name || hotel.name,
       location: (hotel.location || {}).merge(location) { |_key, oldval, newval| newval || oldval },
-      description: description.to_s.strip,
+      description: description || hotel.description,
       amenities: (hotel.amenities || {}).merge(amenities) { |_key, oldval, newval| newval || oldval },
       images: (hotel.images || {}).merge(images) { |_key, oldval, newval| newval || oldval },
-      booking_conditions: booking_conditions
+      booking_conditions: booking_conditions || hotel.booking_conditions
     }
     hotel.update(hotel_attrs)
   end
@@ -36,11 +36,11 @@ class HotelService
 
   def location
     {
-      "lat": lat,
-      "lng": lng,
-      "address": address.to_s.strip,
-      "city": city,
-      "country": country
+      "lat" => lat,
+      "lng" => lng,
+      "address" => address,
+      "city" => city,
+      "country" => country
     }
   end
 
@@ -78,9 +78,9 @@ class HotelService
 
   def images
     {
-      'rooms': hotel_data.dig('images', 'rooms'),
-      'site': hotel_data.dig('images', 'site'),
-      'amenities': hotel_data.dig('images', 'amenities')
+      'rooms' => hotel_data.dig('images', 'rooms'),
+      'site' => hotel_data.dig('images', 'site'),
+      'amenities' => hotel_data.dig('images', 'amenities')
     }
   end
 
