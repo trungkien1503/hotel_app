@@ -30,7 +30,7 @@ It needs to work in the following way:
 
 ## What I got
 
-I build this app using Ruby on Rails framework as web server.
+I build this app using Ruby on Rails framework as a web server.
 
 - Crawl hotel data (get and merge data by some simple rules) from provided suppliers
 - Crawling data react dynamically over time when adding/ removing a hotel from 1 of the supplier datasets
@@ -44,7 +44,7 @@ I build this app using Ruby on Rails framework as web server.
 ## How to use
 
 1. Clone this app to the local environment
-2. Install Ruby and Rails
+2. Install Ruby and Rails as detail in Gemfile
 3. Run `bundle install` to install missing gems
 4. Setup the local environment
   1. Run `rake db:create`
@@ -66,6 +66,7 @@ Deploy code to heroku
 - APIs doc: https://ascenda-hotels.herokuapp.com/
 - Example api doc: https://ascenda-hotels.herokuapp.com/apipie/1.0/hotels/index.html
 - Api list of hotels: https://ascenda-hotels.herokuapp.com/v1/hotels.json?destination_id=5432&hotels=iJhz,SjyX
+- Api detail of a hotel: https://ascenda-hotels.herokuapp.com/v1/hotels/iJhz.json
 
 ## Test cases
 Write some spec code in spec/
@@ -80,3 +81,10 @@ Verified code with:
 - Schedule updating hotel data every 10 minutes by https://devcenter.heroku.com/articles/scheduler
 - Build admin page to manage data (without authentication, can apply later)
 - Build Api doc page to help understand api parameters, response better
+
+## Ideas for the next step
+- Add authentication for admin site
+- Add swagger to test api more easier
+- Build front-end pages using JS framework(ex: AngularJS, ReactJS, or VueJS)
+- Add more test cases
+- Update rules for merging data if receiving more detail of requirements
