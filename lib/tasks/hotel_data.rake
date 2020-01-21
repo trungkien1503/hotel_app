@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
-require 'JSON'
-
 namespace :hotel_data do
   desc 'Get and merge hotel data from suppliers'
 
