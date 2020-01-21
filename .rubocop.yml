@@ -12,6 +12,9 @@ Metrics/ModuleLength:
 Metrics/AbcSize:
   Exclude:
     - app/services/hotel_service.rb
+Metrics/BlockLength:
+  Exclude:
+    - spec/requests/api/v1/hotels_spec.rb
 Layout/LineLength:
   Max: 100
 Style/Documentation:

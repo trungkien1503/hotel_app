@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+require 'open-uri'
 # Handle Hotel table
-
 class Hotel < ApplicationRecord
   serialize :booking_conditions, Array
 
