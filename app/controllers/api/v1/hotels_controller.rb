@@ -1,25 +1,28 @@
 # frozen_string_literal: true
 
-module Api::V1
-  class HotelsController < ApiController
-    before_action :set_hotel, only: :show
+module Api
+  module V1
+    # Controller handle requests to v1/hotels
+    class HotelsController < ApiController
+      include ::Hotels::IndexDoc
+      include ::Hotels::ShowDoc
+      before_action :set_hotel, only: :show
 
-    # GET /hotels.json
-    def index
-      @hotels = Hotel.search(search_params)
-    end
+      def index
+        @hotels = Hotel.search(search_params)
+      end
 
-    # GET /hotels/iJhz.json
-    def show; end
+      def show; end
 
-    private
+      private
 
-    def set_hotel
-      @hotel = Hotel.find_by!(hotel_id: params[:id])
-    end
+      def set_hotel
+        @hotel = Hotel.find_by!(hotel_id: params[:id])
+      end
 
-    def search_params
-      params.permit(:hotels, :destination_id)
+      def search_params
+        params.permit(:hotels, :destination_id)
+      end
     end
   end
 end

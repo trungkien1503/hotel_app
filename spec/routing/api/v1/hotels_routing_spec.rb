@@ -9,7 +9,8 @@ RSpec.describe Api::V1::HotelsController, type: :routing do
     end
 
     it 'routes to #show' do
-      expect(get: '/v1/hotels/xYz.json').to route_to('api/v1/hotels#show', id: 'xYz', format: 'json')
+      dest_route = route_to('api/v1/hotels#show', id: 'xYz', format: 'json')
+      expect(get: '/v1/hotels/xYz.json').to dest_route
     end
   end
 end
