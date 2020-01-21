@@ -8,7 +8,7 @@ class HotelService
   end
 
   def save
-    hotel = Hotel.find_or_create_by(supplier_id: supplier_id, destination_id: destination_id)
+    hotel = Hotel.find_or_create_by(hotel_id: hotel_id, destination_id: destination_id)
     hotel_attrs = {
       name: name || hotel.name,
       location: (hotel.location || {}).merge(location) { |_key, oldval, newval| newval || oldval },
@@ -22,7 +22,7 @@ class HotelService
 
   private
 
-  def supplier_id
+  def hotel_id
     hotel_data['Id'] || hotel_data['id'] || hotel_data['hotel_id']
   end
 

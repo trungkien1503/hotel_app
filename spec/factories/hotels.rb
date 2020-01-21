@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :hotel do
-    supplier_id 1
+    hotel_id 'abc'
     destination_id 1
-    name 'MyString'
+    name 'Villas Singapore'
   end
 end

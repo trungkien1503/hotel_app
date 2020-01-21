@@ -12,7 +12,7 @@ class Hotel < ApplicationRecord
     https://api.myjson.com/bins/j6kzm
   ].freeze
 
-  validates :supplier_id, :destination_id, presence: true
+  validates :hotel_id, :destination_id, presence: true
 
   def self.crawling_data
     Hotel.destroy_all
@@ -23,5 +23,15 @@ class Hotel < ApplicationRecord
         hotel_service = HotelService.new(hotel_data).save
       end
     end
+  end
+
+  def self.search(options)
+    hotels = Hotel.all
+    hotels = hotels.where(destination_id: options[:destination_id]) if options[:destination_id]
+    if options[:hotels].present?
+      match_hotels = options[:hotels].split(',')
+      hotels = hotels.where(hotel_id: match_hotels)
+    end
+    hotels.uniq
   end
 end

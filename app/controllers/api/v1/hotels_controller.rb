@@ -6,7 +6,7 @@ module Api::V1
 
     # GET /hotels.json
     def index
-      @hotels = Hotel.all
+      @hotels = Hotel.search(search_params)
     end
 
     # GET /hotels/iJhz.json
@@ -15,7 +15,11 @@ module Api::V1
     private
 
     def set_hotel
-      @hotel = Hotel.find_by!(supplier_id: params[:id])
+      @hotel = Hotel.find_by!(hotel_id: params[:id])
+    end
+
+    def search_params
+      params.permit(:hotels, :destination_id)
     end
   end
 end
