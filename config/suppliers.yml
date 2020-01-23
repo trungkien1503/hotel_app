@@ -1,6 +1,70 @@
+# Array list of suppliers
 suppliers:
   - https://api.myjson.com/bins/gdmqa
   - https://api.myjson.com/bins/1fva3m
   - https://api.myjson.com/bins/j6kzm
   - https://api.myjson.com/bins/fq5iu
   - https://api.myjson.com/bins/101192
+# Define rules how to extract json data
+# id -> {'id': 'abc'}
+# address,city -> { 'address': {'city': 'SG'} }
+extract:
+  string_fields:
+    - hotel_id
+    - name
+    - address
+    - city
+    - country
+    - description
+  hotel_id:
+    - Id
+    - id
+    - hotel_id
+    - HotelId
+    - _id
+  destination_id:
+    - DestinationId
+    - destination
+    - destination_id
+    - _location_id
+  name:
+    - Name
+    - hotel_name
+    - name
+  lat:
+    - Latitude
+    - lat
+  long:
+    - Longitude
+    - lng
+    - long
+  city:
+    - City
+    - address,city
+  country:
+    - location,country
+    - Country
+    - address,country
+  description:
+    - details
+    - Description
+    - info
+    - detail
+  address:
+    - Address
+    - address,formatted
+    - location,address
+    - address
+  amenities:
+    - amenities
+    - Facilities
+  booking_conditions:
+    - booking_conditions
+  room_images:
+    - images,rooms
+    - Images
+    - images
+  site_images:
+    - images,site
+  amenities_images:
+    - images,amenities
