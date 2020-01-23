@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require 'yaml'
+
 class HotelService
   attr_reader :hotel_data
+  attr_reader :suppliers_config
 
   def initialize(hotel_data)
     @hotel_data = hotel_data
+    @suppliers_config = YAML.load_file(Rails.root.join('config/suppliers.yml'))['extract']
   end
 
   def save
-    hotel = Hotel.find_or_create_by(hotel_id: hotel_id, destination_id: destination_id)
+    hotel = Hotel.find_or_create_by(hotel_id: fetch_data('hotel_id'), destination_id: fetch_data('destination_id'))
     hotel.update hotel_attrs(hotel)
   end
 
@@ -16,19 +20,18 @@ class HotelService
 
   def hotel_attrs(hotel)
     {
-      name: merge_by_length(hotel.name, name),
+      name: merge_by_length(hotel.name, fetch_data('name')),
       location: merge_hash_data(hotel.location, location),
-      description: merge_by_length(hotel.description, description),
-      amenities: merge_by_length(hotel.amenities, amenities),
+      description: merge_by_length(hotel.description, fetch_data('description')),
+      amenities: merge_by_length(hotel.amenities, fetch_data('amenities')),
       images: merge_hash_data(hotel.images, images),
-      booking_conditions: booking_conditions || hotel.booking_conditions
+      booking_conditions: fetch_data('booking_conditions') || hotel.booking_conditions
     }
   end
 
   def merge_hash_data(source, dest)
     (source || {}).merge(dest) do |_k, oldval, newval|
-      is_change = newval.to_s.length > oldval.to_s.length
-      is_change ? newval : oldval
+      merge_by_length(newval, oldval)
     end
   end
 
@@ -36,100 +39,49 @@ class HotelService
     return source unless dest
     return dest unless source
 
-    dest.length > source.length ? dest : source
+    dest.to_s.length > source.to_s.length ? dest : source
   end
 
-  def hotel_id
-    hotel_data['Id'] || hotel_data['id'] || hotel_data['hotel_id'] ||
-      hotel_data['HotelId'] || hotel_data['_id']
+  def fetch_data(field)
+    result = nil
+    suppliers_config[field].each do |tag|
+      result ||= get_newval(field, tag)
+    end
+    result
   end
 
-  def destination_id
-    hotel_data['DestinationId'] || hotel_data['destination'] ||
-      hotel_data['destination_id'] || hotel_data['_location_id']
-  end
-
-  def name
-    hotel_data['Name'] || hotel_data['hotel_name'] || hotel_data['name']
+  def get_newval(field, tag)
+    newval = if tag.include?(',')
+               paths = tag.split(',')
+               hotel_data.dig(*paths) if hotel_data[paths.first].is_a?(Hash)
+             else
+               hotel_data[tag]
+             end
+    if suppliers_config['string_fields'].include?(field) && newval.is_a?(Hash)
+      newval = newval.values.compact.join(', ')
+    end
+    newval
   end
 
   def location
     {
-      'lat' => lat,
-      'lng' => lng,
-      'address' => address,
-      'city' => city,
-      'country' => country
+      'lat' => fetch_data('lat'),
+      'lng' => fetch_data('long'),
+      'address' => fetch_data('address'),
+      'city' => fetch_data('city'),
+      'country' => fetch_data('country')
     }
   end
 
-  def lat
-    hotel_data['Latitude'] || hotel_data['lat']
-  end
-
-  def lng
-    hotel_data['Longitude'] || hotel_data['lng'] || hotel_data['long']
-  end
-
-  def address
-    if hotel_data['Address'].is_a?(Hash)
-      hotel_data['Address'].values.compact.map(&:strip).join(', ')
-    elsif hotel_data['address'].is_a?(Hash)
-      hotel_data['address']['formatted']
-    else
-      hotel_data['Address'] || hotel_data.dig('location', 'address') || hotel_data['address']
-    end
-  end
-
-  def city
-    hotel_data['City'] || (hotel_data.dig('address', 'city') if hotel_data['address'].is_a?(Hash))
-  end
-
-  def country
-    hotel_data.dig('location', 'country') || hotel_data['Country'] ||
-      (hotel_data.dig('address', 'country') if hotel_data['address'].is_a?(Hash))
-  end
-
-  def description
-    hotel_data['details'] || hotel_data['Description'] || hotel_data['info'] ||
-      hotel_data['detail']
-  end
-
-  def amenities
-    if hotel_data['amenities'].is_a?(Hash)
-      hotel_data['amenities']
-    else
-      { 'general': (hotel_data['amenities'] || hotel_data['Facilities']) }
-    end
-  end
-
   def images
-    if hotel_data['Images'].is_a?(Array)
-      {
-        'rooms' => hotel_data['Images']
-      }
-    elsif hotel_data['images'].is_a?(Array)
-      rooms_result = []
-      hotel_data['images'].each do |image|
-        rooms_result << { 'link' => image }
-      end
-      {
-        'rooms' => rooms_result
-      }
-    else
-      room_images = organize_image_info hotel_data.dig('images', 'rooms')
-      site_images = organize_image_info hotel_data.dig('images', 'site')
-      amenities_images = organize_image_info hotel_data.dig('images', 'amenities')
-      {
-        'rooms' => room_images,
-        'site' => site_images,
-        'amenities' => amenities_images
-      }
-    end
-  end
-
-  def booking_conditions
-    hotel_data['booking_conditions']
+    room_images = organize_image_info fetch_data('room_images')
+    site_images = organize_image_info fetch_data('site_images')
+    amenities_images = organize_image_info fetch_data('amenities_images')
+    {
+      'rooms' => room_images,
+      'site' => site_images,
+      'amenities' => amenities_images
+    }
   end
 
   def organize_image_info(images)
