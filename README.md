@@ -21,6 +21,7 @@ It needs to work in the following way:
 2. Deliver it via an API endpoint by you which allows us to query the hotels data with some simple filtering
 
 ...
+
 Full details: https://gist.github.com/longkt90/03e70f63d1844f426d8062232861d5f1
 
 ## What I got
