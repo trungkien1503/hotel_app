@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-require 'yaml'
-
 class HotelService
   attr_reader :hotel_data
   attr_reader :suppliers_config
 
   def initialize(hotel_data)
     @hotel_data = hotel_data
-    @suppliers_config = YAML.load_file(Rails.root.join('config/suppliers.yml'))['extract']
   end
 
   def save
-    hotel = Hotel.find_or_create_by(hotel_id: fetch_data('hotel_id'), destination_id: fetch_data('destination_id'))
+    @suppliers_config = YAML.load_file(Rails.root.join('config/suppliers.yml'))['extract']
+    hotel = Hotel.find_or_create_by(hotel_id: fetch_data('hotel_id'))
     hotel.update hotel_attrs(hotel)
   end
 
@@ -20,6 +18,7 @@ class HotelService
 
   def hotel_attrs(hotel)
     {
+      destination_id: fetch_data('destination_id'),
       name: merge_by_length(hotel.name, fetch_data('name')),
       location: merge_hash_data(hotel.location, location),
       description: merge_by_length(hotel.description, fetch_data('description')),

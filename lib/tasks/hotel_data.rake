@@ -5,7 +5,7 @@ namespace :hotel_data do
 
   task crawl: :environment do
     puts 'Start getting and merging hotel data'
-    Hotel.crawling_data
+    CrawlService.new.call
     puts 'Finish!'
   end
 end

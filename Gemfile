@@ -18,6 +18,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+gem 'pg', '~> 1.2.2'
+
 group :development, :test do
   gem 'pry', '~> 0.12.2'
 
@@ -26,9 +28,6 @@ group :development, :test do
 
   # Use Factory Girl for generating random test data
   gem 'factory_girl_rails', '~> 4.9.0'
-
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
 end
 
 group :development do
@@ -36,10 +35,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :production do
-  gem 'pg'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -50,3 +45,5 @@ gem 'rubocop-rails', require: false
 gem 'rails_admin', '~> 2.0.1'
 
 gem 'apipie-rails', '~> 0.5.17'
+
+gem 'parallel', '~> 1.19.1'
