@@ -22,6 +22,8 @@ It needs to work in the following way:
 
 ...
 
+Full details: https://gist.github.com/longkt90/03e70f63d1844f426d8062232861d5f1
+
 ## What I got
 
 I build this app using Ruby on Rails framework as a web server.
