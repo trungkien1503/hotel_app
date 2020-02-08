@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Api::V1::Hotels', type: :request do
   before do
-    Hotel.crawling_data
+    CrawlService.new.call
   end
   describe 'GET /v1/hotels.json' do
     it 'Show list of hotels without parameters' do

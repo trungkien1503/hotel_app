@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::HotelsController, type: :controller do
   before do
-    Hotel.crawling_data
+    CrawlService.new.call
   end
   describe 'GET #index' do
     it 'returns a success response' do
