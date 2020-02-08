@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2020_01_21_092313) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "hotels", force: :cascade do |t|
     t.string "hotel_id", null: false
     t.integer "destination_id", null: false
