@@ -42,7 +42,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'rubocop-rails', require: false
 
-gem 'rails_admin', '~> 2.0.1'
+gem 'rails_admin', '~> 2.0.2'
 
 gem 'apipie-rails', '~> 0.5.17'
 
